@@ -1,0 +1,10 @@
+streamlit>=1.28.0
+pandas>=2.0.0
+plotly>=5.0.0
+sqlite3
+uuid
+dataclasses
+typing
+datetime
+json
+os
