@@ -535,23 +535,29 @@ def create_timeline_gantt(operation: Operation):
         # Calculer la durée en jours
         duration = (phase.date_fin - phase.date_debut).days + 1
         
+        # Convertir les attributs en strings si nécessaire
+        nom_str = phase.nom[0] if isinstance(phase.nom, list) and phase.nom else str(phase.nom)
+        statut_str = phase.statut[0] if isinstance(phase.statut, list) and phase.statut else str(phase.statut)
+        responsable_str = phase.responsable[0] if isinstance(phase.responsable, list) and phase.responsable else str(phase.responsable)
+        freins_list = phase.freins if hasattr(phase, 'freins') and isinstance(phase.freins, list) else []
+        
         # Couleur selon le statut
         color = phase.couleur
-        if phase.statut == "Terminé":
+        if statut_str == "Terminé":
             color = "#28a745"
-        elif phase.statut == "En cours":
+        elif statut_str == "En cours":
             color = "#007bff"
-        elif phase.statut == "Retard":
+        elif statut_str == "Retard":
             color = "#dc3545"
         
         # Icône freins
-        icon = " ⚠️" if phase.freins else ""
+        icon = " ⚠️" if freins_list else ""
         
         # Ajouter la barre de la phase
         fig.add_trace(go.Bar(
-            name=phase.nom,
+            name=nom_str,
             x=[duration],
-            y=[f"{phase.nom}{icon}"],
+            y=[f"{nom_str}{icon}"],
             orientation='h',
             marker=dict(
                 color=color,
@@ -563,13 +569,13 @@ def create_timeline_gantt(operation: Operation):
             textposition="inside",
             textfont=dict(color="white", size=10, family="Arial"),
             hovertemplate=(
-                f"<b>{phase.nom}</b><br>"
+                f"<b>{nom_str}</b><br>"
                 f"Début: {phase.date_debut.strftime('%d/%m/%Y')}<br>"
                 f"Fin: {phase.date_fin.strftime('%d/%m/%Y')}<br>"
                 f"Durée: {format_duration(duration)}<br>"
-                f"Statut: {phase.statut}<br>"
-                f"Responsable: {phase.responsable}<br>"
-                f"Freins: {len(phase.freins)}<br>"
+                f"Statut: {statut_str}<br>"
+                f"Responsable: {responsable_str}<br>"
+                f"Freins: {len(freins_list)}<br>"
                 "<extra></extra>"
             )
         ))
@@ -657,8 +663,8 @@ def dashboard():
         )
     
     with col4:
-        phases_en_retard = sum(1 for op in operations for phase in op.phases if phase.statut == "Retard")
-        freins_critiques = sum(1 for op in operations for phase in op.phases if phase.freins)
+        phases_en_retard = sum(1 for op in operations for phase in op.phases if hasattr(phase, 'statut') and (phase.statut == "Retard" if isinstance(phase.statut, str) else (isinstance(phase.statut, list) and phase.statut and phase.statut[0] == "Retard")))
+        freins_critiques = sum(1 for op in operations for phase in op.phases if hasattr(phase, 'freins') and (isinstance(phase.freins, list) and phase.freins))
         st.metric(
             label="⚠️ Alertes Critiques",
             value=phases_en_retard + freins_critiques,
@@ -727,13 +733,13 @@ def dashboard():
         data = []
         for op in recent_ops:
             phases_count = len(op.phases)
-            phases_completed = len([p for p in op.phases if p.statut == "Terminé"])
-            phases_retard = len([p for p in op.phases if p.statut == "Retard"])
+            phases_completed = len([p for p in op.phases if hasattr(p, 'statut') and (p.statut == "Terminé" if isinstance(p.statut, str) else (isinstance(p.statut, list) and p.statut and p.statut[0] == "Terminé"))])
+            phases_retard = len([p for p in op.phases if hasattr(p, 'statut') and (p.statut == "Retard" if isinstance(p.statut, str) else (isinstance(p.statut, list) and p.statut and p.statut[0] == "Retard"))])
             progress = f"{phases_completed}/{phases_count}" if phases_count > 0 else "0/0"
             
             # Indicateur de statut
             status_indicator = "🟢" if phases_retard == 0 else "🔴"
-            if any(p.freins for p in op.phases):
+            if any(hasattr(p, 'freins') and isinstance(p.freins, list) and p.freins for p in op.phases):
                 status_indicator = "🟠"
             
             data.append({
@@ -774,16 +780,20 @@ def dashboard():
     alerts = []
     for op in operations:
         for phase in op.phases:
-            if phase.statut == "Retard":
+            statut_str = phase.statut[0] if isinstance(phase.statut, list) and phase.statut else str(phase.statut)
+            nom_str = phase.nom[0] if isinstance(phase.nom, list) and phase.nom else str(phase.nom)
+            freins_list = phase.freins if hasattr(phase, 'freins') and isinstance(phase.freins, list) else []
+            
+            if statut_str == "Retard":
                 alerts.append({
                     "type": "retard",
-                    "message": f"⚠️ **{op.nom}** - Phase '{phase.nom}' en retard",
+                    "message": f"⚠️ **{op.nom}** - Phase '{nom_str}' en retard",
                     "operation_id": op.id
                 })
-            if phase.freins:
+            if freins_list:
                 alerts.append({
                     "type": "frein",
-                    "message": f"🛑 **{op.nom}** - {len(phase.freins)} frein(s) sur '{phase.nom}'",
+                    "message": f"🛑 **{op.nom}** - {len(freins_list)} frein(s) sur '{nom_str}'",
                     "operation_id": op.id
                 })
     
@@ -991,7 +1001,7 @@ def operations_en_cours():
             with col3:
                 st.metric("Budget", f"{selected_operation.budget:,.0f} €")
             with col4:
-                phases_completed = len([p for p in selected_operation.phases if hasattr(p, 'statut') and p.statut == "Terminé"])
+                phases_completed = len([p for p in selected_operation.phases if hasattr(p, 'statut') and (p.statut == "Terminé" if isinstance(p.statut, str) else (isinstance(p.statut, list) and p.statut and p.statut[0] == "Terminé"))])
                 progress_pct = (phases_completed / len(selected_operation.phases) * 100) if selected_operation.phases else 0
                 st.metric("Avancement", f"{progress_pct:.1f}%", f"{phases_completed}/{len(selected_operation.phases)} phases")
             
@@ -1009,7 +1019,12 @@ def operations_en_cours():
             with tabs[0]:
                 # Liste des phases avec actions rapides
                 for i, phase in enumerate(selected_operation.phases):
-                    with st.expander(f"{i+1}. {phase.nom} ({phase.statut})", expanded=phase.statut == "Retard" or phase.freins):
+                    # Correction type conversion
+                    nom = str(phase.nom) if not isinstance(phase.nom, str) else phase.nom
+                    statut = str(phase.statut) if not isinstance(phase.statut, str) else phase.statut
+                    freins = bool(phase.freins) if hasattr(phase, 'freins') else False
+
+                    with st.expander(f"{i+1}. {nom} ({statut})", expanded=(statut == "Retard" or freins)):
                         col1, col2 = st.columns(2)
                         with col1:
                             st.write(f"**Début :** {phase.date_debut.strftime('%d/%m/%Y')}")
@@ -1017,13 +1032,16 @@ def operations_en_cours():
                             duration_days = (phase.date_fin - phase.date_debut).days + 1
                             st.write(f"**Durée :** {format_duration(duration_days)}")
                         with col2:
-                            st.write(f"**Statut :** {phase.statut}")
-                            st.write(f"**Responsable :** {phase.responsable}")
-                            if phase.freins:
-                                st.error(f"**Freins ({len(phase.freins)}) :** {', '.join(phase.freins)}")
+                            st.write(f"**Statut :** {statut_str}")
+                            responsable_str = phase.responsable[0] if isinstance(phase.responsable, list) and phase.responsable else str(phase.responsable)
+                            st.write(f"**Responsable :** {responsable_str}")
+                            if freins_check:
+                                freins_display = ', '.join(freins_check) if isinstance(freins_check, list) else str(freins_check)
+                                st.error(f"**Freins ({len(freins_check)}) :** {freins_display}")
                         
-                        if phase.description:
-                            st.write(f"**Description :** {phase.description}")
+                        description_str = phase.description[0] if isinstance(phase.description, list) and phase.description else str(phase.description)
+                        if description_str and description_str != 'None':
+                            st.write(f"**Description :** {description_str}")
                         
                         # Actions rapides avec SYNCHRONISATION
                         col_act1, col_act2, col_act3 = st.columns(3)
@@ -1063,7 +1081,10 @@ def operations_en_cours():
                     new_phase_description = st.text_area("Description (optionnel)")
                     
                     # Position d'insertion
-                    positions = ["À la fin"] + [f"Avant '{phase.nom}'" for phase in selected_operation.phases]
+                    positions = ["À la fin"]
+                    for phase in selected_operation.phases:
+                        nom_str = phase.nom[0] if isinstance(phase.nom, list) and phase.nom else str(phase.nom)
+                        positions.append(f"Avant '{nom_str}'")
                     position = st.selectbox("Insérer", positions)
                     
                     if st.form_submit_button("Ajouter la Phase"):
@@ -1114,40 +1135,53 @@ def operations_en_cours():
             with tabs[2]:
                 # Modifier une phase existante avec VALIDATION FONCTIONNELLE
                 if selected_operation.phases:
-                    phase_names = [f"{phase.nom} ({phase.statut})" for phase in selected_operation.phases]
+                    phase_names = []
+                    for phase in selected_operation.phases:
+                        nom_str = phase.nom[0] if isinstance(phase.nom, list) and phase.nom else str(phase.nom)
+                        statut_str = phase.statut[0] if isinstance(phase.statut, list) and phase.statut else str(phase.statut)
+                        phase_names.append(f"{nom_str} ({statut_str})")
+                    
                     selected_phase_name = st.selectbox("Sélectionner une phase à modifier", phase_names)
                     
                     if selected_phase_name:
                         # Trouver la phase sélectionnée
                         selected_phase = None
                         for phase in selected_operation.phases:
-                            if f"{phase.nom} ({phase.statut})" == selected_phase_name:
+                            nom_str = phase.nom[0] if isinstance(phase.nom, list) and phase.nom else str(phase.nom)
+                            statut_str = phase.statut[0] if isinstance(phase.statut, list) and phase.statut else str(phase.statut)
+                            if f"{nom_str} ({statut_str})" == selected_phase_name:
                                 selected_phase = phase
                                 break
                         
                         if selected_phase:
                             with st.form("modify_phase"):
+                                # Convertir les valeurs en strings pour le formulaire
+                                current_statut = selected_phase.statut[0] if isinstance(selected_phase.statut, list) and selected_phase.statut else str(selected_phase.statut)
+                                current_responsable = selected_phase.responsable[0] if isinstance(selected_phase.responsable, list) and selected_phase.responsable else str(selected_phase.responsable)
+                                current_description = selected_phase.description[0] if isinstance(selected_phase.description, list) and selected_phase.description else str(selected_phase.description)
+                                current_freins = selected_phase.freins if hasattr(selected_phase, 'freins') and isinstance(selected_phase.freins, list) else []
+                                
                                 col1, col2 = st.columns(2)
                                 with col1:
                                     mod_statut = st.selectbox("Statut", 
                                         ["En attente", "En cours", "Terminé", "Retard"],
-                                        index=["En attente", "En cours", "Terminé", "Retard"].index(selected_phase.statut)
+                                        index=["En attente", "En cours", "Terminé", "Retard"].index(current_statut) if current_statut in ["En attente", "En cours", "Terminé", "Retard"] else 0
                                     )
-                                    mod_responsable = st.text_input("Responsable", value=selected_phase.responsable)
+                                    mod_responsable = st.text_input("Responsable", value=current_responsable)
                                 with col2:
                                     mod_date_debut = st.date_input("Date début", value=selected_phase.date_debut.date())
                                     mod_date_fin = st.date_input("Date fin", value=selected_phase.date_fin.date())
                                 
-                                mod_description = st.text_area("Description", value=selected_phase.description)
+                                mod_description = st.text_area("Description", value=current_description if current_description != 'None' else "")
                                 
                                 # ===== GESTION FREINS OPÉRATIONNELLE =====
                                 st.write("**Freins identifiés :**")
-                                freins_actuels = selected_phase.freins.copy()
                                 
                                 # Afficher les freins existants
-                                if freins_actuels:
-                                    for frein in freins_actuels:
-                                        st.error(f"• {frein}")
+                                if current_freins:
+                                    for frein in current_freins:
+                                        frein_str = frein[0] if isinstance(frein, list) and frein else str(frein)
+                                        st.error(f"• {frein_str}")
                                 
                                 # Ajouter nouveau frein
                                 nouveau_frein = st.text_input("Ajouter un frein")
@@ -1182,8 +1216,10 @@ def operations_en_cours():
                                     # Gestion des freins
                                     if clear_freins:
                                         selected_phase.freins = []
-                                    if add_frein and add_frein not in selected_phase.freins:
-                                        selected_phase.freins.append(add_frein)
+                                    elif add_frein and add_frein not in current_freins:
+                                        updated_freins = current_freins.copy()
+                                        updated_freins.append(add_frein)
+                                        selected_phase.freins = updated_freins
                                     
                                     # Sauvegarder avec SYNCHRONISATION
                                     db.save_operation(selected_operation)
@@ -1276,8 +1312,8 @@ def gestion_aco():
                 
                 if aco_operations:
                     # Calculer les métriques
-                    phases_retard = sum(1 for op in aco_operations for phase in op.phases if phase.statut == "Retard")
-                    phases_freins = sum(1 for op in aco_operations for phase in op.phases if phase.freins)
+                    phases_retard = sum(1 for op in aco_operations for phase in op.phases if hasattr(phase, 'statut') and (phase.statut == "Retard" if isinstance(phase.statut, str) else (isinstance(phase.statut, list) and phase.statut and phase.statut[0] == "Retard")))
+                    phases_freins = sum(1 for op in aco_operations for phase in op.phases if hasattr(phase, 'freins') and isinstance(phase.freins, list) and phase.freins)
                     budget_moyen = aco.total_budget / len(aco_operations) if aco_operations else 0
                     
                     with st.expander(f"📊 Détail {aco.nom}"):
@@ -1320,9 +1356,9 @@ def gestion_aco():
                     # Tableau des opérations avec NAVIGATION
                     data = []
                     for op in aco_operations:
-                        phases_completed = len([p for p in op.phases if p.statut == "Terminé"])
-                        phases_retard = len([p for p in op.phases if p.statut == "Retard"])
-                        phases_freins = sum(1 for p in op.phases if p.freins)
+                        phases_completed = len([p for p in op.phases if hasattr(p, 'statut') and (p.statut == "Terminé" if isinstance(p.statut, str) else (isinstance(p.statut, list) and p.statut and p.statut[0] == "Terminé"))])
+                        phases_retard = len([p for p in op.phases if hasattr(p, 'statut') and (p.statut == "Retard" if isinstance(p.statut, str) else (isinstance(p.statut, list) and p.statut and p.statut[0] == "Retard"))])
+                        phases_freins = sum(1 for p in op.phases if hasattr(p, 'freins') and isinstance(p.freins, list) and p.freins)
                         
                         status_indicator = "🟢"
                         if phases_retard > 0:
@@ -1376,18 +1412,21 @@ def freins_alertes():
     
     for op in operations:
         for phase in op.phases:
-            if phase.statut == "Retard":
+            statut_str = phase.statut[0] if isinstance(phase.statut, list) and phase.statut else str(phase.statut)
+            freins_list = phase.freins if hasattr(phase, 'freins') and isinstance(phase.freins, list) else []
+            
+            if statut_str == "Retard":
                 alertes_retard.append({
                     "operation": op,
                     "phase": phase,
                     "gravite": "Critique"
                 })
-            if phase.freins:
+            if freins_list:
                 alertes_freins.append({
                     "operation": op,
                     "phase": phase,
-                    "freins": phase.freins,
-                    "gravite": "Élevée" if len(phase.freins) > 2 else "Modérée"
+                    "freins": freins_list,
+                    "gravite": "Élevée" if len(freins_list) > 2 else "Modérée"
                 })
     
     # Métriques d'alerte
@@ -1413,10 +1452,11 @@ def freins_alertes():
             for i, alerte in enumerate(alertes_retard):
                 op = alerte["operation"]
                 phase = alerte["phase"]
+                nom_str = phase.nom[0] if isinstance(phase.nom, list) and phase.nom else str(phase.nom)
                 
                 st.markdown(f"""
                 <div class="frein-critical">
-                    <h5>⚠️ {op.nom} - {phase.nom}</h5>
+                    <h5>⚠️ {op.nom} - {nom_str}</h5>
                     <p><strong>ACO:</strong> {op.aco_responsable} | <strong>Type:</strong> {op.type_operation}</p>
                     <p><strong>Période:</strong> {phase.date_debut.strftime('%d/%m/%Y')} → {phase.date_fin.strftime('%d/%m/%Y')}</p>
                 </div>
@@ -1452,12 +1492,14 @@ def freins_alertes():
                 op = alerte["operation"]
                 phase = alerte["phase"]
                 freins = alerte["freins"]
+                nom_str = phase.nom[0] if isinstance(phase.nom, list) and phase.nom else str(phase.nom)
+                freins_display = ', '.join(freins) if isinstance(freins, list) else str(freins)
                 
                 st.markdown(f"""
                 <div class="frein-alert">
-                    <h5>🛑 {op.nom} - {phase.nom}</h5>
+                    <h5>🛑 {op.nom} - {nom_str}</h5>
                     <p><strong>ACO:</strong> {op.aco_responsable} | <strong>Gravité:</strong> {alerte['gravite']}</p>
-                    <p><strong>Freins ({len(freins)}):</strong> {', '.join(freins)}</p>
+                    <p><strong>Freins ({len(freins)}):</strong> {freins_display}</p>
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -1497,10 +1539,13 @@ def freins_alertes():
                 aco_alerts[aco] = {"retards": 0, "freins": 0}
             
             for phase in op.phases:
-                if phase.statut == "Retard":
+                statut_str = phase.statut[0] if isinstance(phase.statut, list) and phase.statut else str(phase.statut)
+                freins_list = phase.freins if hasattr(phase, 'freins') and isinstance(phase.freins, list) else []
+                
+                if statut_str == "Retard":
                     aco_alerts[aco]["retards"] += 1
-                if phase.freins:
-                    aco_alerts[aco]["freins"] += len(phase.freins)
+                if freins_list:
+                    aco_alerts[aco]["freins"] += len(freins_list)
         
         if aco_alerts:
             df_alerts = pd.DataFrame.from_dict(aco_alerts, orient='index')
