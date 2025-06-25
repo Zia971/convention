@@ -75,15 +75,6 @@ st.markdown("""
         color: white;
     }
     
-    .clickable-row {
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    
-    .clickable-row:hover {
-        background-color: #f8f9fa;
-    }
-    
     .aco-card {
         background: white;
         border: 1px solid #dee2e6;
@@ -338,7 +329,7 @@ class DatabaseManager:
         conn.close()
         return aco_list
 
-# Templates de phases étendus par type d'opération
+# ===== TEMPLATES MÉTIER EXACTS CORRIGÉS =====
 TEMPLATES_PHASES = {
     "OPP": [
         # Phase préliminaire
@@ -430,60 +421,67 @@ TEMPLATES_PHASES = {
         {"nom": "Livraison", "duree_jours": 30, "couleur": "#8c564b"},
         {"nom": "DGD VEFA", "duree_jours": 30, "couleur": "#17becf"}
     ],
+    
+    # ===== TEMPLATE MANDAT D'ÉTUDES EXACT (14 phases) =====
     "MANDATS_ETUDES": [
-        {"nom": "Définition Mission", "duree_jours": 15, "couleur": "#2ca02c"},
-        {"nom": "Cahier des Charges", "duree_jours": 20, "couleur": "#2ca02c"},
-        {"nom": "Préparation Consultation", "duree_jours": 15, "couleur": "#1f77b4"},
-        {"nom": "Consultation MOE", "duree_jours": 45, "couleur": "#1f77b4"},
-        {"nom": "Analyse Candidatures", "duree_jours": 15, "couleur": "#1f77b4"},
-        {"nom": "Attribution MOE", "duree_jours": 20, "couleur": "#ff7f0e"},
-        {"nom": "Signature Marché", "duree_jours": 10, "couleur": "#ff7f0e"},
-        {"nom": "Lancement Mission", "duree_jours": 5, "couleur": "#ff7f0e"},
-        {"nom": "Études Diagnostic", "duree_jours": 30, "couleur": "#d62728"},
-        {"nom": "Études Faisabilité", "duree_jours": 45, "couleur": "#d62728"},
-        {"nom": "Études AVP", "duree_jours": 60, "couleur": "#d62728"},
-        {"nom": "Validation AVP", "duree_jours": 15, "couleur": "#9467bd"},
-        {"nom": "Études PRO", "duree_jours": 90, "couleur": "#9467bd"},
-        {"nom": "Validation PRO", "duree_jours": 20, "couleur": "#9467bd"},
-        {"nom": "Livraison Études", "duree_jours": 15, "couleur": "#8c564b"},
-        {"nom": "Réception Mission", "duree_jours": 10, "couleur": "#8c564b"}
+        {"nom": "Signature convention mandat", "duree_jours": 7, "couleur": "#2ca02c"},
+        {"nom": "Définition besoins/programme", "duree_jours": 20, "couleur": "#2ca02c"},
+        {"nom": "Diagnostic technique/urbain", "duree_jours": 30, "couleur": "#1f77b4"},
+        {"nom": "Études de faisabilité", "duree_jours": 45, "couleur": "#1f77b4"},
+        {"nom": "Lancement consultation programmiste", "duree_jours": 15, "couleur": "#ff7f0e"},
+        {"nom": "Attribution/notification programmiste", "duree_jours": 10, "couleur": "#ff7f0e"},
+        {"nom": "Lancement consultation MOE urbaine", "duree_jours": 20, "couleur": "#d62728"},
+        {"nom": "Attribution/notification MOE urbaine", "duree_jours": 15, "couleur": "#d62728"},
+        {"nom": "Démarrage études (OS)", "duree_jours": 5, "couleur": "#9467bd"},
+        {"nom": "Concertation/validation intermédiaire", "duree_jours": 30, "couleur": "#9467bd"},
+        {"nom": "Remise livrables intermédiaires", "duree_jours": 15, "couleur": "#8c564b"},
+        {"nom": "Remise livrables finaux", "duree_jours": 20, "couleur": "#8c564b"},
+        {"nom": "Validation mandant", "duree_jours": 15, "couleur": "#bcbd22"},
+        {"nom": "Clôture mandat", "duree_jours": 10, "couleur": "#17becf"}
     ],
+    
+    # ===== TEMPLATE MANDAT DE RÉALISATION EXACT (21 phases) =====
     "MANDATS_REALISATION": [
-        {"nom": "Reprise Études", "duree_jours": 30, "couleur": "#2ca02c"},
-        {"nom": "Mise à Jour Plans", "duree_jours": 20, "couleur": "#2ca02c"},
-        {"nom": "Préparation DCE", "duree_jours": 30, "couleur": "#1f77b4"},
-        {"nom": "Consultation Entreprises", "duree_jours": 60, "couleur": "#1f77b4"},
-        {"nom": "Analyse Offres", "duree_jours": 20, "couleur": "#1f77b4"},
-        {"nom": "Attribution Marchés", "duree_jours": 30, "couleur": "#ff7f0e"},
-        {"nom": "Signature Marchés", "duree_jours": 15, "couleur": "#ff7f0e"},
-        {"nom": "Préparation Chantier", "duree_jours": 20, "couleur": "#ff7f0e"},
-        {"nom": "Installation Chantier", "duree_jours": 10, "couleur": "#ff7f0e"},
-        {"nom": "Travaux Préparatoires", "duree_jours": 30, "couleur": "#d62728"},
-        {"nom": "Travaux Gros Œuvre", "duree_jours": 120, "couleur": "#d62728"},
-        {"nom": "Travaux Second Œuvre", "duree_jours": 90, "couleur": "#d62728"},
-        {"nom": "Travaux Finitions", "duree_jours": 60, "couleur": "#d62728"},
-        {"nom": "Essais Réception", "duree_jours": 15, "couleur": "#9467bd"},
-        {"nom": "Réception Travaux", "duree_jours": 15, "couleur": "#9467bd"},
-        {"nom": "Levée Réserves", "duree_jours": 30, "couleur": "#9467bd"},
-        {"nom": "Réception Définitive", "duree_jours": 15, "couleur": "#8c564b"},
-        {"nom": "Bilan Mission", "duree_jours": 10, "couleur": "#8c564b"}
+        {"nom": "Signature convention mandat", "duree_jours": 7, "couleur": "#2ca02c"},
+        {"nom": "Lancement consultation MOE", "duree_jours": 30, "couleur": "#2ca02c"},
+        {"nom": "Attribution/notification MOE", "duree_jours": 15, "couleur": "#2ca02c"},
+        {"nom": "OS études conception", "duree_jours": 5, "couleur": "#1f77b4"},
+        {"nom": "Phase DIAG (si rénovation)", "duree_jours": 20, "couleur": "#1f77b4"},
+        {"nom": "Phase ESQ (Esquisse)", "duree_jours": 30, "couleur": "#1f77b4"},
+        {"nom": "Phase APS (Avant-Projet Sommaire)", "duree_jours": 45, "couleur": "#ff7f0e"},
+        {"nom": "Phase APD (Avant-Projet Définitif)", "duree_jours": 60, "couleur": "#ff7f0e"},
+        {"nom": "Phase PRO-DCE (Projet-DCE)", "duree_jours": 45, "couleur": "#ff7f0e"},
+        {"nom": "Lancement consultation entreprises", "duree_jours": 30, "couleur": "#d62728"},
+        {"nom": "Attribution/notification marchés", "duree_jours": 20, "couleur": "#d62728"},
+        {"nom": "OS travaux", "duree_jours": 5, "couleur": "#d62728"},
+        {"nom": "Phase EXE (Études exécution)", "duree_jours": 30, "couleur": "#9467bd"},
+        {"nom": "Démarrage travaux", "duree_jours": 10, "couleur": "#9467bd"},
+        {"nom": "Suivi chantier", "duree_jours": 240, "couleur": "#9467bd"},
+        {"nom": "Réception provisoire", "duree_jours": 15, "couleur": "#8c564b"},
+        {"nom": "Levée réserves", "duree_jours": 60, "couleur": "#8c564b"},
+        {"nom": "Réception définitive", "duree_jours": 15, "couleur": "#8c564b"},
+        {"nom": "DGD (Décompte Général)", "duree_jours": 30, "couleur": "#bcbd22"},
+        {"nom": "GPA (Garantie Parfait Achèvement)", "duree_jours": 365, "couleur": "#bcbd22"},
+        {"nom": "Clôture mandat", "duree_jours": 15, "couleur": "#17becf"}
     ],
+    
+    # ===== TEMPLATE AMO EXACT (15 phases) =====
     "AMO": [
-        {"nom": "Audit Initial", "duree_jours": 15, "couleur": "#2ca02c"},
-        {"nom": "Diagnostic Besoins", "duree_jours": 20, "couleur": "#2ca02c"},
-        {"nom": "Recommandations", "duree_jours": 15, "couleur": "#2ca02c"},
-        {"nom": "Assistance Programmation", "duree_jours": 45, "couleur": "#1f77b4"},
-        {"nom": "Validation Programme", "duree_jours": 15, "couleur": "#1f77b4"},
-        {"nom": "Assistance Études", "duree_jours": 60, "couleur": "#1f77b4"},
-        {"nom": "Assistance Consultation", "duree_jours": 60, "couleur": "#ff7f0e"},
-        {"nom": "Assistance Attribution", "duree_jours": 30, "couleur": "#ff7f0e"},
-        {"nom": "Assistance Marchés", "duree_jours": 20, "couleur": "#ff7f0e"},
-        {"nom": "Assistance Réalisation", "duree_jours": 200, "couleur": "#d62728"},
-        {"nom": "Suivi Qualité", "duree_jours": 180, "couleur": "#d62728"},
-        {"nom": "Assistance Réception", "duree_jours": 30, "couleur": "#9467bd"},
-        {"nom": "Assistance Livraison", "duree_jours": 20, "couleur": "#9467bd"},
-        {"nom": "Bilan Mission AMO", "duree_jours": 15, "couleur": "#8c564b"},
-        {"nom": "Retour d'Expérience", "duree_jours": 10, "couleur": "#8c564b"}
+        {"nom": "Signature marché AMO", "duree_jours": 7, "couleur": "#2ca02c"},
+        {"nom": "Assistance définition besoins", "duree_jours": 30, "couleur": "#2ca02c"},
+        {"nom": "Assistance retenir MOE", "duree_jours": 45, "couleur": "#2ca02c"},
+        {"nom": "Suivi études conception", "duree_jours": 120, "couleur": "#1f77b4"},
+        {"nom": "Assistance rédaction pièces", "duree_jours": 30, "couleur": "#1f77b4"},
+        {"nom": "Assistance retenir OPC/CT/SPS", "duree_jours": 20, "couleur": "#ff7f0e"},
+        {"nom": "Assistance marchés entreprises", "duree_jours": 60, "couleur": "#ff7f0e"},
+        {"nom": "Suivi exécution travaux", "duree_jours": 240, "couleur": "#d62728"},
+        {"nom": "Assistance réceptions", "duree_jours": 30, "couleur": "#d62728"},
+        {"nom": "Assistance DGD", "duree_jours": 45, "couleur": "#9467bd"},
+        {"nom": "Suivi GPA", "duree_jours": 365, "couleur": "#9467bd"},
+        {"nom": "Assistance clôture", "duree_jours": 20, "couleur": "#8c564b"},
+        {"nom": "Bilan mission AMO", "duree_jours": 15, "couleur": "#8c564b"},
+        {"nom": "Retour d'expérience", "duree_jours": 10, "couleur": "#bcbd22"},
+        {"nom": "Clôture mission", "duree_jours": 5, "couleur": "#17becf"}
     ]
 }
 
@@ -499,11 +497,13 @@ UNITES_DUREE = {
 def get_database():
     return DatabaseManager()
 
-# Initialisation session state
+# Initialisation session state simplifiée
 if 'selected_operation_id' not in st.session_state:
     st.session_state.selected_operation_id = None
 if 'selected_aco' not in st.session_state:
     st.session_state.selected_aco = None
+if 'refresh_trigger' not in st.session_state:
+    st.session_state.refresh_trigger = 0
 
 def convert_to_days(valeur: int, unite: str) -> int:
     """Convertit une durée en jours selon l'unité"""
@@ -518,106 +518,102 @@ def format_duration(jours: int) -> str:
     else:
         return f"{jours} jours"
 
+def force_refresh():
+    """Force le rafraîchissement complet de l'application"""
+    st.session_state.refresh_trigger += 1
+    st.rerun()
+
 def create_timeline_gantt(operation: Operation):
-    """Crée une timeline Gantt horizontale avec flèches colorées"""
+    """Crée une timeline Gantt horizontale fonctionnelle avec flèches colorées"""
     if not operation.phases:
         st.warning("Aucune phase définie pour cette opération")
         return None
     
-    fig = go.Figure()
-    
-    # Créer les barres pour chaque phase
-    for i, phase in enumerate(operation.phases):
-        # Calculer la durée en jours
-        duration = (phase.date_fin - phase.date_debut).days
+    try:
+        fig = go.Figure()
         
-        # Couleur selon le statut
-        color = phase.couleur
-        if phase.statut == "Terminé":
-            color = "#28a745"
-        elif phase.statut == "En cours":
-            color = "#007bff"
-        elif phase.statut == "Retard":
-            color = "#dc3545"
-        
-        # Icône selon les freins
-        icon = "⚠️" if phase.freins else ""
-        
-        # Ajouter la barre de la phase
-        fig.add_trace(go.Bar(
-            name=phase.nom,
-            x=[duration],
-            y=[f"{phase.nom} {icon}"],
-            orientation='h',
-            marker=dict(
-                color=color,
-                line=dict(color='white', width=2),
-                opacity=0.8 if phase.freins else 1.0
-            ),
-            base=phase.date_debut,
-            text=f"{phase.nom}<br>{format_duration(duration)}",
-            textposition="inside",
-            textfont=dict(color="white", size=10, family="Arial"),
-            hovertemplate=(
-                f"<b>{phase.nom}</b><br>"
-                f"Début: {phase.date_debut.strftime('%d/%m/%Y')}<br>"
-                f"Fin: {phase.date_fin.strftime('%d/%m/%Y')}<br>"
-                f"Durée: {format_duration(duration)}<br>"
-                f"Statut: {phase.statut}<br>"
-                f"Responsable: {phase.responsable}<br>"
-                f"Freins: {len(phase.freins)}<br>"
-                "<extra></extra>"
-            )
-        ))
-        
-        # Ajouter une flèche si ce n'est pas la dernière phase
-        if i < len(operation.phases) - 1:
-            next_phase = operation.phases[i + 1]
+        # Créer les barres pour chaque phase
+        for i, phase in enumerate(operation.phases):
+            # Calculer la durée en jours
+            duration = (phase.date_fin - phase.date_debut).days + 1
             
-            # Flèche de liaison
-            fig.add_annotation(
-                x=phase.date_fin,
-                y=i,
-                ax=next_phase.date_debut,
-                ay=i + 1,
-                arrowhead=2,
-                arrowsize=1.5,
-                arrowwidth=3,
-                arrowcolor="#666666"
-            )
-    
-    # Configuration du layout
-    fig.update_layout(
-        title={
-            'text': f"Timeline Interactive - {operation.nom}",
-            'x': 0.5,
-            'xanchor': 'center',
-            'font': {'size': 20, 'color': '#1f77b4'}
-        },
-        xaxis_title="Période",
-        yaxis_title="Phases",
-        height=max(500, len(operation.phases) * 50),
-        showlegend=False,
-        plot_bgcolor='rgba(248,249,250,0.8)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        xaxis=dict(
-            type='date',
-            tickformat='%b %Y',
-            gridcolor='lightgray',
-            gridwidth=1,
-            showgrid=True
-        ),
-        yaxis=dict(
-            gridcolor='lightgray',
-            gridwidth=1,
-            showgrid=True,
-            categoryorder='total ascending'
-        ),
-        margin=dict(l=250, r=50, t=80, b=50),
-        font=dict(family="Arial", size=12)
-    )
-    
-    return fig
+            # Couleur selon le statut
+            color = phase.couleur
+            if phase.statut == "Terminé":
+                color = "#28a745"
+            elif phase.statut == "En cours":
+                color = "#007bff"
+            elif phase.statut == "Retard":
+                color = "#dc3545"
+            
+            # Icône selon les freins
+            icon = " ⚠️" if phase.freins else ""
+            
+            # Ajouter la barre de la phase
+            fig.add_trace(go.Bar(
+                name=phase.nom,
+                x=[duration],
+                y=[f"{phase.nom}{icon}"],
+                orientation='h',
+                marker=dict(
+                    color=color,
+                    line=dict(color='white', width=1),
+                    opacity=0.9
+                ),
+                base=phase.date_debut,
+                text=f"{format_duration(duration)}",
+                textposition="inside",
+                textfont=dict(color="white", size=9, family="Arial Black"),
+                hovertemplate=(
+                    f"<b>{phase.nom}</b><br>"
+                    f"Début: {phase.date_debut.strftime('%d/%m/%Y')}<br>"
+                    f"Fin: {phase.date_fin.strftime('%d/%m/%Y')}<br>"
+                    f"Durée: {format_duration(duration)}<br>"
+                    f"Statut: {phase.statut}<br>"
+                    f"Responsable: {phase.responsable}<br>"
+                    f"Freins: {len(phase.freins)}<br>"
+                    "<extra></extra>"
+                ),
+                showlegend=False
+            ))
+        
+        # Configuration du layout optimisée
+        fig.update_layout(
+            title={
+                'text': f"🎯 Timeline {operation.nom}",
+                'x': 0.5,
+                'xanchor': 'center',
+                'font': {'size': 18, 'color': '#1f77b4', 'family': 'Arial Black'}
+            },
+            xaxis_title="📅 Période",
+            yaxis_title="📋 Phases",
+            height=max(400, len(operation.phases) * 40),
+            showlegend=False,
+            plot_bgcolor='rgba(248,249,250,0.3)',
+            paper_bgcolor='rgba(255,255,255,1)',
+            xaxis=dict(
+                type='date',
+                tickformat='%b %Y',
+                gridcolor='lightgray',
+                gridwidth=0.5,
+                showgrid=True,
+                tickangle=45
+            ),
+            yaxis=dict(
+                gridcolor='lightgray',
+                gridwidth=0.5,
+                showgrid=True,
+                autorange="reversed"
+            ),
+            margin=dict(l=300, r=50, t=80, b=80),
+            font=dict(family="Arial", size=11)
+        )
+        
+        return fig
+        
+    except Exception as e:
+        st.error(f"Erreur lors de la création de la timeline: {str(e)}")
+        return None
 
 def dashboard():
     """Dashboard principal avec KPIs et vue d'ensemble"""
@@ -710,7 +706,7 @@ def dashboard():
         else:
             st.info("Aucune donnée ACO")
     
-    # Tableau des opérations récentes avec liens cliquables
+    # Tableau des opérations récentes avec navigation
     st.subheader("📋 Opérations Récentes")
     if operations:
         # Trier par date de création (plus récentes d'abord)
@@ -740,31 +736,31 @@ def dashboard():
                 "Statut": op.statut,
                 "Budget": f"{op.budget:,.0f} €",
                 "Progression": progress,
-                "Créée le": op.date_creation.strftime("%d/%m/%Y"),
-                "ID": op.id  # Caché mais utilisé pour la sélection
+                "Créée le": op.date_creation.strftime("%d/%m/%Y")
             })
         
         df = pd.DataFrame(data)
         
-        # Sélection d'opération
-        selected_indices = st.dataframe(
-            df.drop('ID', axis=1), 
+        # Affichage du tableau avec sélection
+        event = st.dataframe(
+            df, 
             use_container_width=True, 
             height=400,
             on_select="rerun",
             selection_mode="single-row"
         )
         
-        # Si une ligne est sélectionnée, naviguer vers l'opération
-        if hasattr(selected_indices, 'selection') and selected_indices.selection.rows:
-            selected_idx = selected_indices.selection.rows[0]
-            selected_op_id = df.iloc[selected_idx]['ID']
-            st.session_state.selected_operation_id = selected_op_id
-            st.info(f"✅ Opération '{df.iloc[selected_idx]['Nom']}' sélectionnée. Allez dans 'Opérations en cours' pour voir les détails.")
+        # Navigation vers l'opération sélectionnée
+        if event.selection and event.selection.rows:
+            selected_idx = event.selection.rows[0]
+            selected_op = recent_ops[selected_idx]
+            st.session_state.selected_operation_id = selected_op.id
+            st.success(f"✅ Opération '{selected_op.nom}' sélectionnée. Rendez-vous dans 'Opérations en cours' !")
+            
     else:
-        st.info("Aucune opération trouvée. Utilisez le module 'Nouvelle Opération' pour commencer.")
+        st.info("Aucune opération trouvée. Utilisez 'Nouvelle Opération' pour commencer.")
     
-    # Alertes et notifications avec actions
+    # Alertes et notifications
     st.subheader("🚨 Alertes & Notifications")
     
     alerts = []
@@ -774,15 +770,13 @@ def dashboard():
                 alerts.append({
                     "type": "retard",
                     "message": f"⚠️ **{op.nom}** - Phase '{phase.nom}' en retard",
-                    "operation_id": op.id,
-                    "phase_id": phase.id
+                    "operation_id": op.id
                 })
             if phase.freins:
                 alerts.append({
                     "type": "frein",
                     "message": f"🛑 **{op.nom}** - {len(phase.freins)} frein(s) sur '{phase.nom}'",
-                    "operation_id": op.id,
-                    "phase_id": phase.id
+                    "operation_id": op.id
                 })
     
     if alerts:
@@ -808,7 +802,8 @@ def nouvelle_operation():
     aco_list = db.load_aco()
     aco_names = [aco.nom for aco in aco_list]
     
-    with st.form("nouvelle_operation"):
+    # Formulaire principal avec validation
+    with st.form("nouvelle_operation", clear_on_submit=False):
         col1, col2 = st.columns(2)
         
         with col1:
@@ -820,31 +815,34 @@ def nouvelle_operation():
             aco_responsable = st.selectbox("ACO Responsable *", aco_names)
         
         with col2:
-            budget = st.number_input("Budget (€) *", min_value=0.0, value=100000.0, step=10000.0)
+            budget = st.number_input("Budget (€) *", min_value=0.0, value=500000.0, step=10000.0)
             date_debut = st.date_input("Date de début *", datetime.now().date())
             date_fin = st.date_input("Date de fin prévue *", (datetime.now() + timedelta(days=365)).date())
         
-        # Personnalisation des phases
+        # Configuration des phases
         st.subheader("🎯 Configuration des Phases")
         
-        # Phases par défaut selon le type
+        # Affichage du template selon le type
         if type_operation in TEMPLATES_PHASES:
             template_phases = TEMPLATES_PHASES[type_operation]
-            st.info(f"Template {type_operation} : {len(template_phases)} phases par défaut")
+            
+            # Informations sur le template
+            duree_totale = sum(p["duree_jours"] for p in template_phases)
+            st.info(f"📋 Template **{type_operation}** : {len(template_phases)} phases - Durée totale : {format_duration(duree_totale)}")
             
             # Afficher les phases du template
-            with st.expander(f"Voir les {len(template_phases)} phases du template {type_operation}"):
+            with st.expander(f"👁️ Voir les {len(template_phases)} phases du template {type_operation}"):
                 for i, phase_template in enumerate(template_phases):
                     duration_formatted = format_duration(phase_template['duree_jours'])
-                    st.write(f"{i+1}. **{phase_template['nom']}** - {duration_formatted}")
+                    st.write(f"**{i+1}.** {phase_template['nom']} - *{duration_formatted}*")
         
-        # Option pour personnaliser
-        personnaliser = st.checkbox("Personnaliser les phases")
+        # Option personnalisation
+        personnaliser = st.checkbox("🔧 Personnaliser les phases")
         phases_personnalisees = []
         
         if personnaliser:
-            st.write("Ajoutez vos phases personnalisées :")
-            nb_phases = st.number_input("Nombre de phases", min_value=1, max_value=100, value=5)
+            st.write("**Phases personnalisées :**")
+            nb_phases = st.number_input("Nombre de phases", min_value=1, max_value=50, value=5)
             
             for i in range(nb_phases):
                 with st.container():
@@ -866,73 +864,85 @@ def nouvelle_operation():
                             "couleur": phase_couleur
                         })
         
-        submitted = st.form_submit_button("🚀 Créer l'Opération", type="primary")
+        # Bouton de soumission
+        submitted = st.form_submit_button("🚀 Créer l'Opération", type="primary", use_container_width=True)
         
+        # Validation et création
         if submitted:
+            # Validation des champs obligatoires
             if not nom or not type_operation or not aco_responsable:
-                st.error("Veuillez remplir tous les champs obligatoires (*)")
+                st.error("❌ Veuillez remplir tous les champs obligatoires (*)")
                 return
             
-            # Créer l'opération
-            operation_id = str(uuid.uuid4())
+            if date_debut >= date_fin:
+                st.error("❌ La date de fin doit être postérieure à la date de début")
+                return
             
-            # Utiliser les phases personnalisées ou le template
-            phases_template = phases_personnalisees if personnaliser and phases_personnalisees else TEMPLATES_PHASES[type_operation]
-            
-            # Créer les phases
-            phases = []
-            current_date = datetime.combine(date_debut, datetime.min.time())
-            
-            for phase_template in phases_template:
-                phase_id = str(uuid.uuid4())
-                date_fin_phase = current_date + timedelta(days=phase_template["duree_jours"])
+            try:
+                # Créer l'opération
+                operation_id = str(uuid.uuid4())
                 
-                phase = Phase(
-                    id=phase_id,
-                    nom=phase_template["nom"],
-                    date_debut=current_date,
-                    date_fin=date_fin_phase,
-                    couleur=phase_template["couleur"],
-                    statut="En attente",
-                    responsable=aco_responsable
+                # Utiliser les phases personnalisées ou le template
+                phases_template = phases_personnalisees if personnaliser and phases_personnalisees else TEMPLATES_PHASES[type_operation]
+                
+                # Créer les phases
+                phases = []
+                current_date = datetime.combine(date_debut, datetime.min.time())
+                
+                for phase_template in phases_template:
+                    phase_id = str(uuid.uuid4())
+                    date_fin_phase = current_date + timedelta(days=phase_template["duree_jours"] - 1)
+                    
+                    phase = Phase(
+                        id=phase_id,
+                        nom=phase_template["nom"],
+                        date_debut=current_date,
+                        date_fin=date_fin_phase,
+                        couleur=phase_template["couleur"],
+                        statut="En attente",
+                        responsable=aco_responsable
+                    )
+                    phases.append(phase)
+                    current_date = date_fin_phase + timedelta(days=1)
+                
+                # Créer l'opération
+                operation = Operation(
+                    id=operation_id,
+                    nom=nom,
+                    type_operation=type_operation,
+                    aco_responsable=aco_responsable,
+                    date_creation=datetime.now(),
+                    date_debut=datetime.combine(date_debut, datetime.min.time()),
+                    date_fin_prevue=datetime.combine(date_fin, datetime.min.time()),
+                    budget=budget,
+                    statut="Créée",
+                    phases=phases
                 )
-                phases.append(phase)
-                current_date = date_fin_phase + timedelta(days=1)
-            
-            # Créer l'opération
-            operation = Operation(
-                id=operation_id,
-                nom=nom,
-                type_operation=type_operation,
-                aco_responsable=aco_responsable,
-                date_creation=datetime.now(),
-                date_debut=datetime.combine(date_debut, datetime.min.time()),
-                date_fin_prevue=datetime.combine(date_fin, datetime.min.time()),
-                budget=budget,
-                statut="Créée",
-                phases=phases
-            )
-            
-            # Sauvegarder
-            db.save_operation(operation)
-            
-            st.success(f"✅ Opération '{nom}' créée avec succès !")
-            st.balloons()
-            
-            # Mettre à jour la sélection et synchroniser
-            st.session_state.selected_operation_id = operation_id
-            
-            # Afficher un aperçu de la timeline
-            st.subheader("📊 Aperçu de la Timeline")
-            fig = create_timeline_gantt(operation)
-            if fig:
-                st.plotly_chart(fig, use_container_width=True)
-            
-            # Forcer la synchronisation
-            st.rerun()
+                
+                # Sauvegarder
+                db.save_operation(operation)
+                
+                # Mettre à jour la sélection
+                st.session_state.selected_operation_id = operation_id
+                
+                # Confirmation
+                st.success(f"✅ Opération '{nom}' créée avec succès avec {len(phases)} phases !")
+                st.balloons()
+                
+                # Afficher un aperçu de la timeline
+                st.subheader("📊 Aperçu de la Timeline")
+                fig = create_timeline_gantt(operation)
+                if fig:
+                    st.plotly_chart(fig, use_container_width=True)
+                
+                # Forcer le refresh complet
+                force_refresh()
+                
+            except Exception as e:
+                st.error(f"❌ Erreur lors de la création : {str(e)}")
 
 def operations_en_cours():
-    """Module des opérations en cours (ancien Timeline Gantt)"""
+    """Module des opérations en cours avec timeline interactive"""
     st.header("📊 Opérations en Cours")
     
     db = get_database()
@@ -942,7 +952,7 @@ def operations_en_cours():
         st.warning("Aucune opération trouvée. Créez d'abord une opération.")
         return
     
-    # Sélection de l'opération avec pré-sélection si définie
+    # Sélection de l'opération avec pré-sélection
     operation_names = [f"{op.nom} ({op.type_operation})" for op in operations]
     
     # Trouver l'index de l'opération pré-sélectionnée
@@ -983,34 +993,28 @@ def operations_en_cours():
                 progress_pct = (phases_completed / len(selected_operation.phases) * 100) if selected_operation.phases else 0
                 st.metric("Avancement", f"{progress_pct:.1f}%", f"{phases_completed}/{len(selected_operation.phases)} phases")
             
-            # Timeline Gantt
+            # Timeline Gantt interactive
             st.subheader("🎯 Timeline Interactive")
             fig = create_timeline_gantt(selected_operation)
             if fig:
                 st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.error("❌ Impossible d'afficher la timeline")
             
             # Gestion des phases
             st.subheader("⚙️ Gestion des Phases")
             
-            tabs = st.tabs(["📋 Liste des Phases", "➕ Ajouter Phase", "🔧 Modifier Phase"])
+            tabs = st.tabs(["📋 Liste des Phases", "🔧 Modifier Phase", "➕ Ajouter Phase"])
             
             with tabs[0]:
-                # Liste des phases avec statuts visuels
+                # Liste des phases avec actions rapides
                 for i, phase in enumerate(selected_operation.phases):
-                    # Couleur d'arrière-plan selon le statut
-                    if phase.statut == "Terminé":
-                        status_class = "status-active"
-                    elif phase.statut == "Retard":
-                        status_class = "status-critical"
-                    else:
-                        status_class = "status-pending"
-                    
                     with st.expander(f"{i+1}. {phase.nom} ({phase.statut})", expanded=phase.statut == "Retard" or phase.freins):
                         col1, col2 = st.columns(2)
                         with col1:
                             st.write(f"**Début :** {phase.date_debut.strftime('%d/%m/%Y')}")
                             st.write(f"**Fin :** {phase.date_fin.strftime('%d/%m/%Y')}")
-                            duration_days = (phase.date_fin - phase.date_debut).days
+                            duration_days = (phase.date_fin - phase.date_debut).days + 1
                             st.write(f"**Durée :** {format_duration(duration_days)}")
                         with col2:
                             st.write(f"**Statut :** {phase.statut}")
@@ -1021,97 +1025,32 @@ def operations_en_cours():
                         if phase.description:
                             st.write(f"**Description :** {phase.description}")
                         
-                        # Actions rapides
+                        # Actions rapides avec callbacks
                         col_act1, col_act2, col_act3 = st.columns(3)
                         with col_act1:
                             if st.button(f"✅ Terminer", key=f"complete_{phase.id}"):
                                 phase.statut = "Terminé"
                                 db.save_operation(selected_operation)
-                                st.success("Phase marquée comme terminée !")
-                                st.rerun()
+                                st.success("Phase terminée !")
+                                force_refresh()
                         with col_act2:
                             if st.button(f"🚀 Démarrer", key=f"start_{phase.id}"):
                                 phase.statut = "En cours"
                                 db.save_operation(selected_operation)
-                                st.success("Phase marquée en cours !")
-                                st.rerun()
+                                st.success("Phase démarrée !")
+                                force_refresh()
                         with col_act3:
                             if st.button(f"⚠️ Retard", key=f"delay_{phase.id}"):
                                 phase.statut = "Retard"
                                 db.save_operation(selected_operation)
-                                st.warning("Phase marquée en retard !")
-                                st.rerun()
+                                st.warning("Phase en retard !")
+                                force_refresh()
             
             with tabs[1]:
-                # Ajouter une nouvelle phase
-                st.write("Ajouter une nouvelle phase à l'opération")
-                
-                with st.form("add_phase"):
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        new_phase_nom = st.text_input("Nom de la phase")
-                        new_duree = st.number_input("Durée", min_value=1, value=30)
-                        new_unite = st.selectbox("Unité", ["jours", "semaines", "mois"])
-                    with col2:
-                        new_phase_responsable = st.text_input("Responsable", value=selected_operation.aco_responsable)
-                        new_phase_couleur = st.color_picker("Couleur", "#1f77b4")
-                    
-                    new_phase_description = st.text_area("Description (optionnel)")
-                    
-                    # Position d'insertion
-                    positions = ["À la fin"] + [f"Avant '{phase.nom}'" for phase in selected_operation.phases]
-                    position = st.selectbox("Insérer", positions)
-                    
-                    if st.form_submit_button("Ajouter la Phase"):
-                        if new_phase_nom:
-                            # Convertir la durée en jours
-                            new_phase_duree = convert_to_days(new_duree, new_unite)
-                            
-                            # Calculer les dates
-                            if position == "À la fin" and selected_operation.phases:
-                                date_debut = selected_operation.phases[-1].date_fin + timedelta(days=1)
-                            elif position != "À la fin":
-                                # Trouver la position d'insertion
-                                idx = positions.index(position) - 1
-                                date_debut = selected_operation.phases[idx].date_debut
-                                # Décaler les phases suivantes
-                                for phase in selected_operation.phases[idx:]:
-                                    phase.date_debut += timedelta(days=new_phase_duree)
-                                    phase.date_fin += timedelta(days=new_phase_duree)
-                            else:
-                                date_debut = selected_operation.date_debut
-                            
-                            date_fin = date_debut + timedelta(days=new_phase_duree - 1)
-                            
-                            # Créer la nouvelle phase
-                            new_phase = Phase(
-                                id=str(uuid.uuid4()),
-                                nom=new_phase_nom,
-                                date_debut=date_debut,
-                                date_fin=date_fin,
-                                couleur=new_phase_couleur,
-                                statut="En attente",
-                                description=new_phase_description,
-                                responsable=new_phase_responsable
-                            )
-                            
-                            # Insérer dans la liste
-                            if position == "À la fin":
-                                selected_operation.phases.append(new_phase)
-                            else:
-                                idx = positions.index(position) - 1
-                                selected_operation.phases.insert(idx, new_phase)
-                            
-                            # Sauvegarder
-                            db.save_operation(selected_operation)
-                            st.success("Phase ajoutée avec succès !")
-                            st.rerun()
-            
-            with tabs[2]:
                 # Modifier une phase existante
                 if selected_operation.phases:
                     phase_names = [f"{phase.nom} ({phase.statut})" for phase in selected_operation.phases]
-                    selected_phase_name = st.selectbox("Sélectionner une phase à modifier", phase_names)
+                    selected_phase_name = st.selectbox("Phase à modifier", phase_names)
                     
                     if selected_phase_name:
                         # Trouver la phase sélectionnée
@@ -1122,7 +1061,7 @@ def operations_en_cours():
                                 break
                         
                         if selected_phase:
-                            with st.form("modify_phase"):
+                            with st.form(f"modify_phase_{selected_phase.id}"):
                                 col1, col2 = st.columns(2)
                                 with col1:
                                     mod_statut = st.selectbox("Statut", 
@@ -1136,80 +1075,144 @@ def operations_en_cours():
                                 
                                 mod_description = st.text_area("Description", value=selected_phase.description)
                                 
-                                # Gestion des freins améliorée
+                                # Gestion des freins simplifiée
                                 st.subheader("🛑 Gestion des Freins")
-                                freins_actuels = selected_phase.freins.copy()
                                 
-                                # Afficher les freins existants avec possibilité de suppression
+                                # Freins actuels
+                                freins_actuels = selected_phase.freins.copy()
                                 if freins_actuels:
                                     st.write("**Freins identifiés :**")
-                                    freins_to_remove = []
-                                    for i, frein in enumerate(freins_actuels):
-                                        col_frein, col_del = st.columns([4, 1])
-                                        with col_frein:
-                                            st.error(f"• {frein}")
-                                        with col_del:
-                                            if st.checkbox("Suppr.", key=f"del_frein_{i}"):
-                                                freins_to_remove.append(frein)
-                                    
-                                    # Supprimer les freins marqués
-                                    for frein in freins_to_remove:
-                                        freins_actuels.remove(frein)
+                                    for frein in freins_actuels:
+                                        st.error(f"• {frein}")
                                 
-                                # Ajouter nouveaux freins
-                                st.write("**Ajouter un nouveau frein :**")
-                                col_frein, col_add = st.columns([3, 1])
-                                with col_frein:
-                                    nouveau_frein = st.text_input("Description du frein", key="new_frein")
-                                with col_add:
-                                    if st.button("➕ Ajouter"):
-                                        if nouveau_frein and nouveau_frein not in freins_actuels:
-                                            freins_actuels.append(nouveau_frein)
+                                # Ajouter nouveau frein
+                                nouveau_frein = st.text_input("Ajouter un frein")
                                 
                                 # Freins prédéfinis
                                 freins_predefinies = [
                                     "Retard fournisseur",
-                                    "Problème technique",
+                                    "Problème technique", 
                                     "Attente validation",
                                     "Conditions météo",
                                     "Problème administratif",
-                                    "Manque de ressources",
-                                    "Dépendance externe"
+                                    "Manque de ressources"
                                 ]
+                                frein_predefini = st.selectbox("Ou sélectionner un frein prédéfini", [""] + freins_predefinies)
                                 
-                                st.write("**Ou sélectionner un frein prédéfini :**")
-                                frein_predefini = st.selectbox("Freins courants", [""] + freins_predefinies)
-                                if frein_predefini and frein_predefini not in freins_actuels:
-                                    if st.button("➕ Ajouter prédéfini"):
-                                        freins_actuels.append(frein_predefini)
+                                # Actions freins
+                                col_clear, col_add = st.columns(2)
+                                with col_clear:
+                                    clear_freins = st.checkbox("Lever tous les freins")
+                                with col_add:
+                                    add_frein = nouveau_frein or frein_predefini
                                 
                                 if st.form_submit_button("💾 Modifier la Phase"):
-                                    # Mettre à jour la phase
-                                    selected_phase.statut = mod_statut
-                                    selected_phase.responsable = mod_responsable
-                                    selected_phase.date_debut = datetime.combine(mod_date_debut, datetime.min.time())
-                                    selected_phase.date_fin = datetime.combine(mod_date_fin, datetime.min.time())
-                                    selected_phase.description = mod_description
-                                    selected_phase.freins = freins_actuels
-                                    
-                                    # Sauvegarder avec synchronisation forcée
-                                    db.save_operation(selected_operation)
-                                    st.success("Phase modifiée avec succès !")
-                                    st.rerun()
+                                    try:
+                                        # Mettre à jour la phase
+                                        selected_phase.statut = mod_statut
+                                        selected_phase.responsable = mod_responsable
+                                        selected_phase.date_debut = datetime.combine(mod_date_debut, datetime.min.time())
+                                        selected_phase.date_fin = datetime.combine(mod_date_fin, datetime.min.time())
+                                        selected_phase.description = mod_description
+                                        
+                                        # Gestion des freins
+                                        if clear_freins:
+                                            selected_phase.freins = []
+                                        if add_frein and add_frein not in selected_phase.freins:
+                                            selected_phase.freins.append(add_frein)
+                                        
+                                        # Sauvegarder avec callback
+                                        db.save_operation(selected_operation)
+                                        st.success("Phase modifiée avec succès !")
+                                        force_refresh()
+                                        
+                                    except Exception as e:
+                                        st.error(f"Erreur lors de la modification : {str(e)}")
+            
+            with tabs[2]:
+                # Ajouter une nouvelle phase
+                with st.form("add_new_phase"):
+                    st.write("**Ajouter une nouvelle phase :**")
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        new_phase_nom = st.text_input("Nom de la phase")
+                        new_duree = st.number_input("Durée", min_value=1, value=30)
+                        new_unite = st.selectbox("Unité", ["jours", "semaines", "mois"])
+                    with col2:
+                        new_phase_responsable = st.text_input("Responsable", value=selected_operation.aco_responsable)
+                        new_phase_couleur = st.color_picker("Couleur", "#1f77b4")
+                    
+                    new_phase_description = st.text_area("Description (optionnel)")
+                    
+                    # Position d'insertion
+                    positions = ["À la fin"] + [f"Avant '{phase.nom}'" for phase in selected_operation.phases]
+                    position = st.selectbox("Position", positions)
+                    
+                    if st.form_submit_button("➕ Ajouter la Phase"):
+                        if new_phase_nom:
+                            try:
+                                # Convertir la durée
+                                new_phase_duree = convert_to_days(new_duree, new_unite)
+                                
+                                # Calculer les dates
+                                if position == "À la fin" and selected_operation.phases:
+                                    date_debut = selected_operation.phases[-1].date_fin + timedelta(days=1)
+                                elif position != "À la fin":
+                                    idx = positions.index(position) - 1
+                                    date_debut = selected_operation.phases[idx].date_debut
+                                    # Décaler les phases suivantes
+                                    for phase in selected_operation.phases[idx:]:
+                                        phase.date_debut += timedelta(days=new_phase_duree)
+                                        phase.date_fin += timedelta(days=new_phase_duree)
+                                else:
+                                    date_debut = selected_operation.date_debut
+                                
+                                date_fin = date_debut + timedelta(days=new_phase_duree - 1)
+                                
+                                # Créer la nouvelle phase
+                                new_phase = Phase(
+                                    id=str(uuid.uuid4()),
+                                    nom=new_phase_nom,
+                                    date_debut=date_debut,
+                                    date_fin=date_fin,
+                                    couleur=new_phase_couleur,
+                                    statut="En attente",
+                                    description=new_phase_description,
+                                    responsable=new_phase_responsable
+                                )
+                                
+                                # Insérer dans la liste
+                                if position == "À la fin":
+                                    selected_operation.phases.append(new_phase)
+                                else:
+                                    idx = positions.index(position) - 1
+                                    selected_operation.phases.insert(idx, new_phase)
+                                
+                                # Sauvegarder avec callback
+                                db.save_operation(selected_operation)
+                                st.success("Phase ajoutée avec succès !")
+                                force_refresh()
+                                
+                            except Exception as e:
+                                st.error(f"Erreur lors de l'ajout : {str(e)}")
+                        else:
+                            st.error("Le nom de la phase est obligatoire")
 
-def gestion_aco():
-    """Module de gestion des ACO - MAINTENANT ACTIF"""
-    st.header("👥 Gestion ACO")
+def gestion_modules():
+    """Modules spécialisés - Gestion ACO et Freins & Alertes"""
+    st.header("⚙️ Modules Spécialisés")
     
     db = get_database()
-    aco_list = db.load_aco()
-    operations = db.load_operations()
     
-    tabs = st.tabs(["📋 Liste des ACO", "📊 Performances", "👤 Détail ACO"])
+    tabs = st.tabs(["👥 Gestion ACO", "🚨 Freins & Alertes"])
     
     with tabs[0]:
-        # Liste des ACO avec leurs statistiques
-        st.subheader("📋 Équipe ACO SPIC Guadeloupe")
+        # MODULE GESTION ACO
+        aco_list = db.load_aco()
+        operations = db.load_operations()
+        
+        st.subheader("👥 Équipe ACO SPIC Guadeloupe")
         
         for aco in aco_list:
             with st.container():
@@ -1233,188 +1236,63 @@ def gestion_aco():
                 specialites_str = " | ".join(aco.specialites)
                 st.write(f"**Spécialités :** {specialites_str}")
                 
-                # Bouton pour voir le détail
-                if st.button(f"Voir les opérations de {aco.nom}", key=f"voir_{aco.nom}"):
-                    st.session_state.selected_aco = aco.nom
-                    st.rerun()
+                # Opérations de cet ACO
+                aco_operations = [op for op in operations if op.aco_responsable == aco.nom]
+                
+                if aco_operations:
+                    with st.expander(f"📋 Voir les {len(aco_operations)} opérations de {aco.nom}"):
+                        for op in aco_operations:
+                            phases_completed = len([p for p in op.phases if p.statut == "Terminé"])
+                            phases_retard = len([p for p in op.phases if p.statut == "Retard"])
+                            
+                            status_icon = "🟢" if phases_retard == 0 else "🔴"
+                            if any(p.freins for p in op.phases):
+                                status_icon = "🟠"
+                            
+                            col_status, col_name, col_progress, col_action = st.columns([1, 3, 2, 1])
+                            with col_status:
+                                st.write(status_icon)
+                            with col_name:
+                                st.write(f"**{op.nom}** ({op.type_operation})")
+                            with col_progress:
+                                st.write(f"{phases_completed}/{len(op.phases)} phases")
+                            with col_action:
+                                if st.button("👁️", key=f"view_aco_op_{op.id}"):
+                                    st.session_state.selected_operation_id = op.id
+                                    st.info("Allez dans 'Opérations en cours' !")
                 
                 st.markdown("---")
     
     with tabs[1]:
-        # Performances des ACO
-        st.subheader("📊 Tableau de Bord des Performances")
+        # MODULE FREINS & ALERTES  
+        operations = db.load_operations()
         
-        if aco_list:
-            # Graphique des opérations par ACO
-            aco_names = [aco.nom for aco in aco_list]
-            operations_counts = [aco.operations_en_cours for aco in aco_list]
-            budgets = [aco.total_budget for aco in aco_list]
-            
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                fig_ops = px.bar(
-                    x=aco_names, 
-                    y=operations_counts,
-                    title="Opérations en cours par ACO",
-                    labels={'x': 'ACO', 'y': 'Nombre d\'opérations'},
-                    color=operations_counts,
-                    color_continuous_scale='Blues'
-                )
-                st.plotly_chart(fig_ops, use_container_width=True)
-            
-            with col2:
-                fig_budget = px.bar(
-                    x=aco_names, 
-                    y=budgets,
-                    title="Budget total géré par ACO",
-                    labels={'x': 'ACO', 'y': 'Budget (€)'},
-                    color=budgets,
-                    color_continuous_scale='Greens'
-                )
-                st.plotly_chart(fig_budget, use_container_width=True)
-            
-            # Statistiques détaillées
-            st.subheader("📈 Analyse des Performances")
-            
-            for aco in aco_list:
-                aco_operations = [op for op in operations if op.aco_responsable == aco.nom]
-                
-                if aco_operations:
-                    # Calculer les métriques
-                    phases_retard = sum(1 for op in aco_operations for phase in op.phases if phase.statut == "Retard")
-                    phases_freins = sum(1 for op in aco_operations for phase in op.phases if phase.freins)
-                    budget_moyen = aco.total_budget / len(aco_operations) if aco_operations else 0
-                    
-                    with st.expander(f"📊 Détail {aco.nom}"):
-                        col1, col2, col3, col4 = st.columns(4)
-                        with col1:
-                            st.metric("Opérations totales", len(aco_operations))
-                        with col2:
-                            st.metric("Phases en retard", phases_retard)
-                        with col3:
-                            st.metric("Phases avec freins", phases_freins)
-                        with col4:
-                            st.metric("Budget moyen", f"{budget_moyen:,.0f} €")
-    
-    with tabs[2]:
-        # Détail ACO sélectionné
-        if st.session_state.selected_aco:
-            selected_aco_obj = None
-            for aco in aco_list:
-                if aco.nom == st.session_state.selected_aco:
-                    selected_aco_obj = aco
-                    break
-            
-            if selected_aco_obj:
-                st.subheader(f"👤 Détail {selected_aco_obj.nom}")
-                
-                # Informations personnelles
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.write(f"**Email :** {selected_aco_obj.email}")
-                    st.write(f"**Téléphone :** {selected_aco_obj.telephone}")
-                with col2:
-                    st.write(f"**Spécialités :** {' | '.join(selected_aco_obj.specialites)}")
-                
-                # Opérations de cet ACO
-                aco_operations = [op for op in operations if op.aco_responsable == selected_aco_obj.nom]
-                
-                if aco_operations:
-                    st.subheader(f"📋 Opérations de {selected_aco_obj.nom} ({len(aco_operations)})")
-                    
-                    # Tableau des opérations
-                    data = []
-                    for op in aco_operations:
-                        phases_completed = len([p for p in op.phases if p.statut == "Terminé"])
-                        phases_retard = len([p for p in op.phases if p.statut == "Retard"])
-                        phases_freins = sum(1 for p in op.phases if p.freins)
-                        
-                        status_indicator = "🟢"
-                        if phases_retard > 0:
-                            status_indicator = "🔴"
-                        elif phases_freins > 0:
-                            status_indicator = "🟠"
-                        
-                        data.append({
-                            "🎯": status_indicator,
-                            "Nom": op.nom,
-                            "Type": op.type_operation,
-                            "Statut": op.statut,
-                            "Budget": f"{op.budget:,.0f} €",
-                            "Progression": f"{phases_completed}/{len(op.phases)}",
-                            "Retards": phases_retard,
-                            "Freins": phases_freins,
-                            "Créée": op.date_creation.strftime("%d/%m/%Y")
-                        })
-                    
-                    df = pd.DataFrame(data)
-                    
-                    # Sélection d'opération
-                    selected_indices = st.dataframe(
-                        df, 
-                        use_container_width=True,
-                        on_select="rerun",
-                        selection_mode="single-row"
-                    )
-                    
-                    # Navigation vers l'opération sélectionnée
-                    if hasattr(selected_indices, 'selection') and selected_indices.selection.rows:
-                        selected_idx = selected_indices.selection.rows[0]
-                        selected_op = aco_operations[selected_idx]
-                        st.session_state.selected_operation_id = selected_op.id
-                        st.info(f"✅ Opération '{selected_op.nom}' sélectionnée. Allez dans 'Opérations en cours' pour voir les détails.")
-                else:
-                    st.info(f"Aucune opération assignée à {selected_aco_obj.nom}")
-        else:
-            st.info("Sélectionnez un ACO dans l'onglet 'Liste des ACO' pour voir les détails.")
-
-def freins_alertes():
-    """Module de gestion des freins et alertes - MAINTENANT ACTIF"""
-    st.header("🚨 Freins & Alertes")
-    
-    db = get_database()
-    operations = db.load_operations()
-    
-    # Collecter toutes les alertes
-    alertes_retard = []
-    alertes_freins = []
-    
-    for op in operations:
-        for phase in op.phases:
-            if phase.statut == "Retard":
-                alertes_retard.append({
-                    "operation": op,
-                    "phase": phase,
-                    "gravite": "Critique"
-                })
-            if phase.freins:
-                alertes_freins.append({
-                    "operation": op,
-                    "phase": phase,
-                    "freins": phase.freins,
-                    "gravite": "Élevée" if len(phase.freins) > 2 else "Modérée"
-                })
-    
-    # Métriques d'alerte
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric("🔴 Phases en Retard", len(alertes_retard))
-    with col2:
-        st.metric("🟠 Phases avec Freins", len(alertes_freins))
-    with col3:
-        total_freins = sum(len(alert["freins"]) for alert in alertes_freins)
-        st.metric("📊 Total Freins", total_freins)
-    with col4:
-        alertes_critiques = len([a for a in alertes_retard]) + len([a for a in alertes_freins if a["gravite"] == "Élevée"])
-        st.metric("⚠️ Alertes Critiques", alertes_critiques)
-    
-    tabs = st.tabs(["🔴 Retards", "🟠 Freins", "📊 Tableau de Bord", "⚙️ Actions"])
-    
-    with tabs[0]:
+        # Collecter les alertes
+        alertes_retard = []
+        alertes_freins = []
+        
+        for op in operations:
+            for phase in op.phases:
+                if phase.statut == "Retard":
+                    alertes_retard.append({"operation": op, "phase": phase})
+                if phase.freins:
+                    alertes_freins.append({"operation": op, "phase": phase, "freins": phase.freins})
+        
+        # Métriques d'alerte
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("🔴 Phases en Retard", len(alertes_retard))
+        with col2:
+            st.metric("🟠 Phases avec Freins", len(alertes_freins))
+        with col3:
+            total_freins = sum(len(alert["freins"]) for alert in alertes_freins)
+            st.metric("📊 Total Freins", total_freins)
+        with col4:
+            alertes_critiques = len(alertes_retard) + len([a for a in alertes_freins if len(a["freins"]) > 2])
+            st.metric("⚠️ Alertes Critiques", alertes_critiques)
+        
         # Gestion des retards
         st.subheader("🔴 Phases en Retard")
-        
         if alertes_retard:
             for i, alerte in enumerate(alertes_retard):
                 op = alerte["operation"]
@@ -1423,8 +1301,7 @@ def freins_alertes():
                 st.markdown(f"""
                 <div class="frein-critical">
                     <h5>⚠️ {op.nom} - {phase.nom}</h5>
-                    <p><strong>ACO:</strong> {op.aco_responsable} | <strong>Type:</strong> {op.type_operation}</p>
-                    <p><strong>Période:</strong> {phase.date_debut.strftime('%d/%m/%Y')} → {phase.date_fin.strftime('%d/%m/%Y')}</p>
+                    <p><strong>ACO:</strong> {op.aco_responsable} | <strong>Période:</strong> {phase.date_debut.strftime('%d/%m/%Y')} → {phase.date_fin.strftime('%d/%m/%Y')}</p>
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -1434,25 +1311,22 @@ def freins_alertes():
                         phase.statut = "En cours"
                         db.save_operation(op)
                         st.success("Retard résolu !")
-                        st.rerun()
+                        force_refresh()
                 with col2:
-                    if st.button(f"📅 Reprogrammer", key=f"reschedule_{i}"):
-                        # Ajouter 7 jours à la date de fin
+                    if st.button(f"📅 +7 jours", key=f"reschedule_{i}"):
                         phase.date_fin += timedelta(days=7)
                         db.save_operation(op)
-                        st.info("Phase reprogrammée (+7 jours)")
-                        st.rerun()
+                        st.info("Phase reprogrammée !")
+                        force_refresh()
                 with col3:
-                    if st.button(f"👁️ Voir Détail", key=f"view_retard_{i}"):
+                    if st.button(f"👁️ Voir", key=f"view_retard_{i}"):
                         st.session_state.selected_operation_id = op.id
-                        st.info("Allez dans 'Opérations en cours' pour plus de détails.")
+                        st.info("Allez dans 'Opérations en cours' !")
         else:
             st.success("✅ Aucune phase en retard !")
-    
-    with tabs[1]:
+        
         # Gestion des freins
         st.subheader("🟠 Freins Identifiés")
-        
         if alertes_freins:
             for i, alerte in enumerate(alertes_freins):
                 op = alerte["operation"]
@@ -1462,7 +1336,7 @@ def freins_alertes():
                 st.markdown(f"""
                 <div class="frein-alert">
                     <h5>🛑 {op.nom} - {phase.nom}</h5>
-                    <p><strong>ACO:</strong> {op.aco_responsable} | <strong>Gravité:</strong> {alerte['gravite']}</p>
+                    <p><strong>ACO:</strong> {op.aco_responsable}</p>
                     <p><strong>Freins ({len(freins)}):</strong> {', '.join(freins)}</p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -1473,160 +1347,26 @@ def freins_alertes():
                         phase.freins = []
                         db.save_operation(op)
                         st.success("Freins levés !")
-                        st.rerun()
+                        force_refresh()
                 with col2:
-                    if st.button(f"➕ Ajouter Frein", key=f"add_frein_{i}"):
-                        # Interface pour ajouter un frein
-                        with st.form(f"add_frein_form_{i}"):
-                            new_frein = st.text_input("Nouveau frein")
-                            if st.form_submit_button("Ajouter"):
-                                if new_frein:
-                                    phase.freins.append(new_frein)
-                                    db.save_operation(op)
-                                    st.success("Frein ajouté !")
-                                    st.rerun()
+                    if st.button(f"➕ Ajouter", key=f"add_frein_{i}"):
+                        new_frein = st.text_input("Nouveau frein", key=f"new_frein_input_{i}")
+                        if new_frein:
+                            phase.freins.append(new_frein)
+                            db.save_operation(op)
+                            st.success("Frein ajouté !")
+                            force_refresh()
                 with col3:
-                    if st.button(f"👁️ Voir Détail", key=f"view_frein_{i}"):
+                    if st.button(f"👁️ Voir", key=f"view_frein_{i}"):
                         st.session_state.selected_operation_id = op.id
-                        st.info("Allez dans 'Opérations en cours' pour plus de détails.")
+                        st.info("Allez dans 'Opérations en cours' !")
         else:
             st.success("✅ Aucun frein identifié !")
-    
-    with tabs[2]:
-        # Tableau de bord des alertes
-        st.subheader("📊 Tableau de Bord des Alertes")
-        
-        # Graphique des alertes par ACO
-        aco_alerts = {}
-        for op in operations:
-            aco = op.aco_responsable
-            if aco not in aco_alerts:
-                aco_alerts[aco] = {"retards": 0, "freins": 0}
-            
-            for phase in op.phases:
-                if phase.statut == "Retard":
-                    aco_alerts[aco]["retards"] += 1
-                if phase.freins:
-                    aco_alerts[aco]["freins"] += len(phase.freins)
-        
-        if aco_alerts:
-            df_alerts = pd.DataFrame.from_dict(aco_alerts, orient='index')
-            df_alerts['ACO'] = df_alerts.index
-            df_alerts['Total_Alertes'] = df_alerts['retards'] + df_alerts['freins']
-            
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                fig_retards = px.bar(
-                    df_alerts, 
-                    x='ACO', 
-                    y='retards',
-                    title="Retards par ACO",
-                    color='retards',
-                    color_continuous_scale='Reds'
-                )
-                st.plotly_chart(fig_retards, use_container_width=True)
-            
-            with col2:
-                fig_freins = px.bar(
-                    df_alerts, 
-                    x='ACO', 
-                    y='freins',
-                    title="Freins par ACO",
-                    color='freins',
-                    color_continuous_scale='Oranges'
-                )
-                st.plotly_chart(fig_freins, use_container_width=True)
-        
-        # Évolution des alertes dans le temps
-        st.subheader("📈 Évolution des Alertes")
-        if operations:
-            # Simuler l'évolution (en réalité, il faudrait un historique)
-            dates = pd.date_range(start='2025-01-01', end='2025-06-24', freq='W')
-            alertes_evolution = [
-                {
-                    'Date': date,
-                    'Retards': len(alertes_retard) + (hash(str(date)) % 5 - 2),
-                    'Freins': len(alertes_freins) + (hash(str(date)) % 3 - 1)
-                }
-                for date in dates
-            ]
-            
-            df_evolution = pd.DataFrame(alertes_evolution)
-            df_evolution['Retards'] = df_evolution['Retards'].clip(lower=0)
-            df_evolution['Freins'] = df_evolution['Freins'].clip(lower=0)
-            
-            fig_evolution = px.line(
-                df_evolution, 
-                x='Date', 
-                y=['Retards', 'Freins'],
-                title="Évolution des Alertes (6 derniers mois)"
-            )
-            st.plotly_chart(fig_evolution, use_container_width=True)
-    
-    with tabs[3]:
-        # Actions globales
-        st.subheader("⚙️ Actions Globales")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.write("**Actions Retards**")
-            if st.button("📅 Reprogrammer tous les retards (+7j)"):
-                count = 0
-                for alerte in alertes_retard:
-                    alerte["phase"].date_fin += timedelta(days=7)
-                    db.save_operation(alerte["operation"])
-                    count += 1
-                if count > 0:
-                    st.success(f"{count} phases reprogrammées !")
-                    st.rerun()
-            
-            if st.button("⚠️ Marquer retards comme critiques"):
-                count = 0
-                for alerte in alertes_retard:
-                    if "CRITIQUE" not in alerte["phase"].freins:
-                        alerte["phase"].freins.append("CRITIQUE - Action requise")
-                        db.save_operation(alerte["operation"])
-                        count += 1
-                if count > 0:
-                    st.warning(f"{count} phases marquées critiques !")
-                    st.rerun()
-        
-        with col2:
-            st.write("**Actions Freins**")
-            if st.button("🧹 Lever tous les freins résolus"):
-                with st.form("bulk_resolve_freins"):
-                    st.write("Confirmer la levée de tous les freins ?")
-                    motif = st.text_input("Motif de résolution")
-                    if st.form_submit_button("Confirmer"):
-                        count = 0
-                        for alerte in alertes_freins:
-                            alerte["phase"].freins = []
-                            if motif:
-                                alerte["phase"].description += f" | Freins levés: {motif}"
-                            db.save_operation(alerte["operation"])
-                            count += 1
-                        if count > 0:
-                            st.success(f"{count} freins levés !")
-                            st.rerun()
-            
-            if st.button("📧 Notifier ACO des freins"):
-                # Simulation d'envoi de notifications
-                aco_notifications = {}
-                for alerte in alertes_freins:
-                    aco = alerte["operation"].aco_responsable
-                    if aco not in aco_notifications:
-                        aco_notifications[aco] = []
-                    aco_notifications[aco].append(f"{alerte['operation'].nom} - {alerte['phase'].nom}")
-                
-                for aco, notifications in aco_notifications.items():
-                    st.info(f"📧 Notification envoyée à {aco} pour {len(notifications)} frein(s)")
 
 def main():
-    """Fonction principale avec navigation"""
+    """Fonction principale avec navigation simplifiée"""
     
-    # Sidebar avec navigation
+    # Sidebar avec logo
     st.sidebar.markdown("""
         <div class="sidebar-logo">
             <h2>🏗️ OPCOPILOT</h2>
@@ -1634,49 +1374,40 @@ def main():
         </div>
     """, unsafe_allow_html=True)
     
-    # Menu de navigation - Modules ACTIFS maintenant
+    # ===== NAVIGATION SIMPLIFIÉE (5 ONGLETS MAX) =====
     pages = {
         "🏠 Dashboard": dashboard,
         "➕ Nouvelle Opération": nouvelle_operation,
-        "📊 Opérations en cours": operations_en_cours,  # Renommé !
-        "👥 Gestion ACO": gestion_aco,  # MAINTENANT ACTIF
-        "🚨 Freins & Alertes": freins_alertes  # MAINTENANT ACTIF
+        "📊 Opérations en cours": operations_en_cours,
+        "⚙️ Modules": gestion_modules
     }
     
-    selected_page = st.sidebar.selectbox("Navigation", list(pages.keys()))
+    selected_page = st.sidebar.selectbox("📋 Navigation", list(pages.keys()))
     
-    # Informations système dans la sidebar - MISE À JOUR
+    # Modules disponibles dans la sidebar
     st.sidebar.markdown("---")
-    st.sidebar.markdown("### 📋 Modules Disponibles")
-    modules = [
+    st.sidebar.markdown("### ✅ Modules Actifs")
+    modules_actifs = [
         "✅ Dashboard KPIs",
         "✅ Création Opération", 
-        "✅ Opérations en cours",  # Renommé
-        "✅ Gestion ACO",  # MAINTENANT VERT
-        "✅ Freins & Alertes",  # MAINTENANT VERT
-        "🔄 REM Saisie (v3.1)",
-        "🔄 Avenants (v3.1)",
-        "🔄 MED Automatisé (v3.1)",
-        "🔄 Concessionnaires (v3.1)",
-        "🔄 DGD (v3.1)",
-        "🔄 GPA (v3.1)",
-        "🔄 Levée Réserves (v3.1)"
+        "✅ Timeline Interactive",
+        "✅ Gestion ACO",
+        "✅ Freins & Alertes"
     ]
     
-    for module in modules:
-        if module.startswith("✅"):
-            st.sidebar.success(module)
-        else:
-            st.sidebar.info(module)
+    for module in modules_actifs:
+        st.sidebar.success(module)
     
+    # Version et état
     st.sidebar.markdown("---")
-    st.sidebar.markdown("### 🎯 Version Actuelle")
-    st.sidebar.info("OPCOPILOT v3.0 CORRIGÉ\n5 Modules Actifs\nSynchronisation OK\nJuin 2025")
+    st.sidebar.markdown("### 🎯 Version")
+    st.sidebar.info("OPCOPILOT v3.0 CORRIGÉ\n✅ Templates métier exacts\n✅ Timeline fonctionnelle\n✅ 5 Modules actifs")
     
-    # Session state pour la navigation
+    # Opération sélectionnée
     if st.session_state.selected_operation_id:
         st.sidebar.markdown("---")
-        st.sidebar.markdown("### 🎯 Opération Sélectionnée")
+        st.sidebar.markdown("### 🎯 Sélection Active")
+        
         db = get_database()
         operations = db.load_operations()
         selected_op = None
@@ -1686,13 +1417,17 @@ def main():
                 break
         
         if selected_op:
-            st.sidebar.info(f"📋 {selected_op.nom}\n👤 {selected_op.aco_responsable}")
+            st.sidebar.info(f"📋 {selected_op.nom}\n👤 {selected_op.aco_responsable}\n📊 {selected_op.type_operation}")
             if st.sidebar.button("🗑️ Désélectionner"):
                 st.session_state.selected_operation_id = None
-                st.rerun()
+                force_refresh()
     
     # Exécuter la page sélectionnée
-    pages[selected_page]()
+    try:
+        pages[selected_page]()
+    except Exception as e:
+        st.error(f"❌ Erreur dans le module {selected_page}: {str(e)}")
+        st.info("🔄 Essayez de recharger la page ou contactez l'administrateur.")
 
 if __name__ == "__main__":
     main()
