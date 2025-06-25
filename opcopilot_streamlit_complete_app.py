@@ -978,6 +978,10 @@ def operations_en_cours():
                 break
         
         if selected_operation:
+            # S'assurer que phases est une liste valide
+            if not isinstance(selected_operation.phases, list):
+                selected_operation.phases = []
+            
             # Informations de l'opération
             col1, col2, col3, col4 = st.columns(4)
             with col1:
@@ -987,7 +991,7 @@ def operations_en_cours():
             with col3:
                 st.metric("Budget", f"{selected_operation.budget:,.0f} €")
             with col4:
-                phases_completed = len([p for p in selected_operation.phases if p.statut == "Terminé"])
+                phases_completed = len([p for p in selected_operation.phases if hasattr(p, 'statut') and p.statut == "Terminé"])
                 progress_pct = (phases_completed / len(selected_operation.phases) * 100) if selected_operation.phases else 0
                 st.metric("Avancement", f"{progress_pct:.1f}%", f"{phases_completed}/{len(selected_operation.phases)} phases")
             
