@@ -523,12 +523,13 @@ if 'selected_aco' not in st.session_state:
     st.session_state.selected_aco = None
 
 def create_timeline_gantt(operation: Operation):
-    """Crée une timeline Gantt horizontale avec flèches colorées - SYNCHRONISÉE"""
+    """Crée une timeline Gantt horizontale avec flèches colorées - SYNCHRONISÉE ET CORRIGÉE"""
     if not operation.phases:
         st.warning("Aucune phase définie pour cette opération")
         return None
     
     fig = go.Figure()
+    traces_added = False
     
     # Créer les barres pour chaque phase
     for i, phase in enumerate(operation.phases):
@@ -579,6 +580,7 @@ def create_timeline_gantt(operation: Operation):
                 "<extra></extra>"
             )
         ))
+        traces_added = True
         
         # Ajouter une flèche si ce n'est pas la dernière phase
         if i < len(operation.phases) - 1:
@@ -627,10 +629,15 @@ def create_timeline_gantt(operation: Operation):
         font=dict(family="Arial", size=11)
     )
     
+    # Vérifier que des traces ont été ajoutées avant de retourner la figure
+    if not traces_added or len(fig.data) == 0:
+        st.warning("Aucune donnée valide pour créer la timeline")
+        return None
+    
     return fig
 
 def dashboard():
-    """Dashboard principal avec KPIs et vue d'ensemble - INTERACTIF"""
+    """Dashboard principal avec KPIs et vue d'ensemble - INTERACTIF ET CORRIGÉ"""
     st.markdown('<div class="main-header">🏗️ OPCOPILOT v3.0 - SPIC Guadeloupe</div>', unsafe_allow_html=True)
     
     db = get_database()
@@ -672,7 +679,7 @@ def dashboard():
             delta_color="inverse"
         )
     
-    # Graphiques de suivi avec filtres
+    # Graphiques de suivi avec filtres CORRIGÉS
     col1, col2 = st.columns(2)
     
     with col1:
@@ -682,13 +689,20 @@ def dashboard():
             for op in operations:
                 type_counts[op.type_operation] = type_counts.get(op.type_operation, 0) + 1
             
-            fig_pie = px.pie(
-                values=list(type_counts.values()),
-                names=list(type_counts.keys()),
-                color_discrete_sequence=['#2ca02c', '#1f77b4', '#ff7f0e', '#d62728', '#9467bd']
-            )
-            fig_pie.update_layout(height=300)
-            st.plotly_chart(fig_pie, use_container_width=True)
+            if type_counts:  # Vérifier que nous avons des données
+                fig_pie = px.pie(
+                    values=list(type_counts.values()),
+                    names=list(type_counts.keys()),
+                    color_discrete_sequence=['#2ca02c', '#1f77b4', '#ff7f0e', '#d62728', '#9467bd']
+                )
+                fig_pie.update_layout(height=300)
+                # Vérifier que la figure a des données avant affichage
+                if len(fig_pie.data) > 0:
+                    st.plotly_chart(fig_pie, use_container_width=True)
+                else:
+                    st.info("Aucune donnée à afficher pour la répartition")
+            else:
+                st.info("Aucune donnée de type d'opération")
         else:
             st.info("Aucune opération créée")
     
@@ -704,19 +718,26 @@ def dashboard():
                 if op.statut in ["En cours", "Créée"]:
                     aco_stats[op.aco_responsable]["actives"] += 1
             
-            df_aco = pd.DataFrame.from_dict(aco_stats, orient='index')
-            df_aco['ACO'] = df_aco.index
-            
-            fig_bar = px.bar(
-                df_aco, 
-                x='ACO', 
-                y='actives',
-                title="Opérations Actives par ACO",
-                color='actives',
-                color_continuous_scale='Blues'
-            )
-            fig_bar.update_layout(height=300)
-            st.plotly_chart(fig_bar, use_container_width=True)
+            if aco_stats:  # Vérifier que nous avons des données
+                df_aco = pd.DataFrame.from_dict(aco_stats, orient='index')
+                df_aco['ACO'] = df_aco.index
+                
+                fig_bar = px.bar(
+                    df_aco, 
+                    x='ACO', 
+                    y='actives',
+                    title="Opérations Actives par ACO",
+                    color='actives',
+                    color_continuous_scale='Blues'
+                )
+                fig_bar.update_layout(height=300)
+                # Vérifier que la figure a des données avant affichage
+                if len(fig_bar.data) > 0:
+                    st.plotly_chart(fig_bar, use_container_width=True)
+                else:
+                    st.info("Aucune donnée à afficher pour les KPIs ACO")
+            else:
+                st.info("Aucune donnée ACO")
         else:
             st.info("Aucune donnée ACO")
     
@@ -950,7 +971,7 @@ def nouvelle_operation():
             st.rerun()
 
 def operations_en_cours():
-    """Module des opérations en cours (ancien Timeline Gantt) - SYNCHRONISÉ"""
+    """Module des opérations en cours (ancien Timeline Gantt) - SYNCHRONISÉ ET CORRIGÉ"""
     st.header("📊 Opérations en cours")  # NAVIGATION COHÉRENTE
     
     db = get_database()
@@ -1017,14 +1038,14 @@ def operations_en_cours():
             tabs = st.tabs(["📋 Liste des Phases", "➕ Ajouter Phase", "🔧 Modifier Phase"])
             
             with tabs[0]:
-                # Liste des phases avec actions rapides
+                # Liste des phases avec actions rapides CORRIGÉE
                 for i, phase in enumerate(selected_operation.phases):
                     # Correction type conversion
                     nom = str(phase.nom) if not isinstance(phase.nom, str) else phase.nom
                     statut = str(phase.statut) if not isinstance(phase.statut, str) else phase.statut
-                    freins = bool(phase.freins) if hasattr(phase, 'freins') else False
+                    freins = phase.freins if hasattr(phase, 'freins') and isinstance(phase.freins, list) else []
 
-                    with st.expander(f"{i+1}. {nom} ({statut})", expanded=(statut == "Retard" or freins)):
+                    with st.expander(f"{i+1}. {nom} ({statut})", expanded=(statut == "Retard" or bool(freins))):
                         col1, col2 = st.columns(2)
                         with col1:
                             st.write(f"**Début :** {phase.date_debut.strftime('%d/%m/%Y')}")
@@ -1032,12 +1053,13 @@ def operations_en_cours():
                             duration_days = (phase.date_fin - phase.date_debut).days + 1
                             st.write(f"**Durée :** {format_duration(duration_days)}")
                         with col2:
-                            st.write(f"**Statut :** {statut_str}")
+                            st.write(f"**Statut :** {statut}")
                             responsable_str = phase.responsable[0] if isinstance(phase.responsable, list) and phase.responsable else str(phase.responsable)
                             st.write(f"**Responsable :** {responsable_str}")
-                            if freins_check:
-                                freins_display = ', '.join(freins_check) if isinstance(freins_check, list) else str(freins_check)
-                                st.error(f"**Freins ({len(freins_check)}) :** {freins_display}")
+                            if freins:
+                                freins_display = ', '.join(freins) if isinstance(freins, list) else str(freins)
+                                freins_count = len(freins) if isinstance(freins, list) else 1
+                                st.error(f"**Freins ({freins_count}) :** {freins_display}")
                         
                         description_str = phase.description[0] if isinstance(phase.description, list) and phase.description else str(phase.description)
                         if description_str and description_str != 'None':
@@ -1228,7 +1250,7 @@ def operations_en_cours():
 
 # ===== MODULES ACTIFS (VERT) =====
 def gestion_aco():
-    """Module de gestion des ACO - MAINTENANT ACTIF"""
+    """Module de gestion des ACO - MAINTENANT ACTIF ET CORRIGÉ"""
     st.header("👥 Gestion ACO")
     
     db = get_database()
@@ -1271,7 +1293,7 @@ def gestion_aco():
                 st.markdown("---")
     
     with tabs[1]:
-        # Performances des ACO
+        # Performances des ACO CORRIGÉES
         st.subheader("📊 Tableau de Bord des Performances")
         
         if aco_list:
@@ -1283,26 +1305,40 @@ def gestion_aco():
             col1, col2 = st.columns(2)
             
             with col1:
-                fig_ops = px.bar(
-                    x=aco_names, 
-                    y=operations_counts,
-                    title="Opérations en cours par ACO",
-                    labels={'x': 'ACO', 'y': 'Nombre d\'opérations'},
-                    color=operations_counts,
-                    color_continuous_scale='Blues'
-                )
-                st.plotly_chart(fig_ops, use_container_width=True)
+                if any(count > 0 for count in operations_counts):  # Vérifier qu'il y a des données
+                    fig_ops = px.bar(
+                        x=aco_names, 
+                        y=operations_counts,
+                        title="Opérations en cours par ACO",
+                        labels={'x': 'ACO', 'y': 'Nombre d\'opérations'},
+                        color=operations_counts,
+                        color_continuous_scale='Blues'
+                    )
+                    # Vérifier que la figure a des données avant affichage
+                    if len(fig_ops.data) > 0:
+                        st.plotly_chart(fig_ops, use_container_width=True)
+                    else:
+                        st.info("Aucune donnée d'opérations à afficher")
+                else:
+                    st.info("Aucune opération en cours")
             
             with col2:
-                fig_budget = px.bar(
-                    x=aco_names, 
-                    y=budgets,
-                    title="Budget total géré par ACO",
-                    labels={'x': 'ACO', 'y': 'Budget (€)'},
-                    color=budgets,
-                    color_continuous_scale='Greens'
-                )
-                st.plotly_chart(fig_budget, use_container_width=True)
+                if any(budget > 0 for budget in budgets):  # Vérifier qu'il y a des données
+                    fig_budget = px.bar(
+                        x=aco_names, 
+                        y=budgets,
+                        title="Budget total géré par ACO",
+                        labels={'x': 'ACO', 'y': 'Budget (€)'},
+                        color=budgets,
+                        color_continuous_scale='Greens'
+                    )
+                    # Vérifier que la figure a des données avant affichage
+                    if len(fig_budget.data) > 0:
+                        st.plotly_chart(fig_budget, use_container_width=True)
+                    else:
+                        st.info("Aucune donnée de budget à afficher")
+                else:
+                    st.info("Aucun budget défini")
             
             # Statistiques détaillées
             st.subheader("📈 Analyse des Performances")
@@ -1400,7 +1436,7 @@ def gestion_aco():
             st.info("Sélectionnez un ACO dans l'onglet 'Liste des ACO' pour voir les détails.")
 
 def freins_alertes():
-    """Module de gestion des freins et alertes - MAINTENANT ACTIF"""
+    """Module de gestion des freins et alertes - MAINTENANT ACTIF ET CORRIGÉ"""
     st.header("🚨 Freins & Alertes")
     
     db = get_database()
@@ -1528,7 +1564,7 @@ def freins_alertes():
             st.success("✅ Aucun frein identifié !")
     
     with tabs[2]:
-        # Tableau de bord des alertes
+        # Tableau de bord des alertes CORRIGÉ
         st.subheader("📊 Tableau de Bord des Alertes")
         
         # Graphique des alertes par ACO
@@ -1555,26 +1591,42 @@ def freins_alertes():
             col1, col2 = st.columns(2)
             
             with col1:
-                fig_retards = px.bar(
-                    df_alerts, 
-                    x='ACO', 
-                    y='retards',
-                    title="Retards par ACO",
-                    color='retards',
-                    color_continuous_scale='Reds'
-                )
-                st.plotly_chart(fig_retards, use_container_width=True)
+                if any(df_alerts['retards'] > 0):  # Vérifier qu'il y a des données
+                    fig_retards = px.bar(
+                        df_alerts, 
+                        x='ACO', 
+                        y='retards',
+                        title="Retards par ACO",
+                        color='retards',
+                        color_continuous_scale='Reds'
+                    )
+                    # Vérifier que la figure a des données avant affichage
+                    if len(fig_retards.data) > 0:
+                        st.plotly_chart(fig_retards, use_container_width=True)
+                    else:
+                        st.info("Aucune donnée de retards à afficher")
+                else:
+                    st.info("Aucun retard identifié")
             
             with col2:
-                fig_freins = px.bar(
-                    df_alerts, 
-                    x='ACO', 
-                    y='freins',
-                    title="Freins par ACO",
-                    color='freins',
-                    color_continuous_scale='Oranges'
-                )
-                st.plotly_chart(fig_freins, use_container_width=True)
+                if any(df_alerts['freins'] > 0):  # Vérifier qu'il y a des données
+                    fig_freins = px.bar(
+                        df_alerts, 
+                        x='ACO', 
+                        y='freins',
+                        title="Freins par ACO",
+                        color='freins',
+                        color_continuous_scale='Oranges'
+                    )
+                    # Vérifier que la figure a des données avant affichage
+                    if len(fig_freins.data) > 0:
+                        st.plotly_chart(fig_freins, use_container_width=True)
+                    else:
+                        st.info("Aucune donnée de freins à afficher")
+                else:
+                    st.info("Aucun frein identifié")
+        else:
+            st.info("Aucune donnée d'alertes disponible")
 
 def main():
     """Fonction principale avec navigation cohérente"""
@@ -1624,7 +1676,7 @@ def main():
     
     st.sidebar.markdown("---")
     st.sidebar.markdown("### 🎯 Version Actuelle")
-    st.sidebar.info("OPCOPILOT v3.0 CORRIGÉ\n✅ Templates métier exacts\n✅ 5 Modules actifs\n✅ Timeline synchronisée\nJuin 2025")
+    st.sidebar.info("OPCOPILOT v3.0 CORRIGÉ\n✅ Templates métier exacts\n✅ 5 Modules actifs\n✅ Timeline synchronisée\n✅ Erreurs Plotly fixées\nJuin 2025")
     
     # Session state pour la navigation
     if st.session_state.selected_operation_id:
